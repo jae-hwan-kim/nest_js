@@ -1,5 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { BoardsService } from './boards.service';
+import { Board } from './board.model';
 
 @Controller('boards') // location
 export class BoardsController {
@@ -8,7 +9,7 @@ export class BoardsController {
 
   // 메서드와 함께 getter 를 선언해야한다.
   @Get('/')
-  getAllBoard() {
+  getAllBoard(): Board[] {
     return this.boardsService.getAllBoards();
   }
 }
