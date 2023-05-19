@@ -14,20 +14,10 @@ export class BoardsService {
     return this.boards;
   }
 
-  // CREAT
-  // createBoard(title: string, description: string) {
-  //   // id 는 유니크 값이라 무조건 넣어줘야한다. 하지만 여기서는 필요없다.
-  //   // uuid 모듈을 사용해서 임의로 유니크 값을 넣어주자.
-  //   // npm install uuid --save
-  //   const board: Board = {
-  //     id: uuid(),
-  //     title, // title: title,
-  //     description, // description: description,
-  //     status: BoardStatus.PUBLIC,
-  //   };
-  //   this.boards.push(board);
-  //   return board;
-  // }
+  getBoardById(id: string): Board {
+    return this.boards.find((board) => board.id === id);
+  }
+
   createBoard(createBoardDto: CreateBoardDto) {
     const { title, description } = createBoardDto;
     const board: Board = {

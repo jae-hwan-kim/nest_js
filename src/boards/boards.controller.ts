@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { BoardsService } from './boards.service';
 import { Board } from './board.model';
 import { CreateBoardDto } from './dto/create-board.dto';
@@ -14,13 +14,15 @@ export class BoardsController {
     return this.boardsService.getAllBoards();
   }
 
+  // localhost:5000?id=abc 의 경우 @Body 로 못가져온다. @Param 을 사용한다.
+  // 만약 localhost:5000?id=abc&title=good 와 같이 2개를 받을 때는 다음과 같이 쓴다.
+  // @Param() params: string[]
+  @Get('/:id') // R
+  getBoardById(@Param('id') id: string): Board {
+    return this.boardsService.getBoardById(id);
+  }
+
   @Post() // C
-  // createBoard(
-  //   @Body('title') title: string,
-  //   @Body('description') description: string,
-  // ): Board {
-  //   return this.boardsService.createBoard(title, description);
-  // }
   createBoard(@Body() createBoardDto: CreateBoardDto): Board {
     return this.boardsService.createBoard(createBoardDto);
   }
