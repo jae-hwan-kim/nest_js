@@ -28,7 +28,7 @@ Provider 를 사용하기 위해서 nest 에 등록해야한다. module 파일�
 
 ## Service?
 
-서비스는 컨트롤러에서 데이터의 유효성을 체크하거나 데이터베이트에 아이템을 생성하는 등의 작업하는 부분을 처리한다. `@Injectable` 데코레이터로 감싸져서 모듈에 제공된다. 
+서비스는 컨트롤러에서 데이터의 유효성을 체크하거나 데이터베이스에 아이템을 생성하는 등의 작업하는 부분을 처리한다. `@Injectable` 데코레이터로 감싸져서 모듈에 제공된다.
 
 <img src="https://github.com/JaeHwan-s-WebServeClass/webserver-nginx/assets/85930183/61872d13-d2e4-42a7-b997-2f48f324c8e0" width="70%">
 

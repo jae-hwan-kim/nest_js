@@ -6,10 +6,10 @@
 
 ---
 
-## nest.js?
+## Nest.js?
 효율적이고 확장 가능한 Node.js 서버 측 애플리케이션을 구축하기 위한 프레임워크이다. 
 
-### nest.js 설치하기
+### Nest.js 설치하기
 
 1. Node.js 설치
 2. Nest JS CLI 로 시작하기
