@@ -5,8 +5,8 @@ import {
   Body,
   Param,
   Delete,
-  UploadedFile,
   Patch,
+  // ParseIntPipe,
 } from '@nestjs/common';
 import { BoardsService } from './boards.service';
 import { Board, BoardStatus } from './board.model';
@@ -33,6 +33,7 @@ export class BoardsController {
 
   @Post() // C
   createBoard(@Body() createBoardDto: CreateBoardDto): Board {
+    // createBoard(@Body(ParseIntPipe) createBoardDto: CreateBoardDto): Board {
     return this.boardsService.createBoard(createBoardDto);
   }
 
