@@ -8,6 +8,7 @@ import {
   Patch,
   UsePipes,
   ValidationPipe,
+  NotFoundException,
   // ParseIntPipe,
 } from '@nestjs/common';
 import { BoardsService } from './boards.service';
@@ -30,7 +31,12 @@ export class BoardsController {
   // @Param() params: string[]
   @Get('/:id') // R
   getBoardById(@Param('id') id: string): Board {
-    return this.boardsService.getBoardById(id);
+    const found = this.boardsService.getBoardById(id);
+
+    if (!found) {
+      throw new NotFoundException(`There is no Board id ${id}`);
+    }
+    return found;
   }
 
   @Post() // C
