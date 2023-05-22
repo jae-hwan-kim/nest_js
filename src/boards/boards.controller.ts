@@ -6,6 +6,8 @@ import {
   Param,
   Delete,
   Patch,
+  UsePipes,
+  ValidationPipe,
   // ParseIntPipe,
 } from '@nestjs/common';
 import { BoardsService } from './boards.service';
@@ -32,6 +34,7 @@ export class BoardsController {
   }
 
   @Post() // C
+  @UsePipes(ValidationPipe)
   createBoard(@Body() createBoardDto: CreateBoardDto): Board {
     // createBoard(@Body(ParseIntPipe) createBoardDto: CreateBoardDto): Board {
     return this.boardsService.createBoard(createBoardDto);

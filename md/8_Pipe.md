@@ -108,3 +108,18 @@ findOne(@Param('id', ParseIntPipe) id: number) {
 }
 ```
 <img src="https://github.com/JaeHwan-s-WebServeClass/webserver-nginx/assets/85930183/83b0e0e7-a957-440c-8d07-f23cc4974055" width="70%">
+
+<br>
+
+---
+
+## 사용 방법
+
+필요한 모듈이 있다.
+
+1. class-validator
+2. class-tranformer
+
+`npm install class-validator class-transformer --save`
+
+❗️ Validate 체크는 DTO 파일뿐만 아니라, Controller 파일에도 해줘야한다.
