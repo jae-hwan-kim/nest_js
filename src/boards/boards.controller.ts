@@ -1,7 +1,16 @@
-import { Controller } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  UsePipes,
+  Post,
+  Body,
+  ValidationPipe,
+} from '@nestjs/common';
 import { BoardsService } from './boards.service';
-import { BoardStatus } from './board-status.enums';
+import { Board } from './board.entity';
 import { CreateBoardDto } from './dto/create-board.dto';
+import { BoardStatus } from './board-status.enums';
 import { BoardStatusValidationPipe } from './pipes/board-status-validation.pipe';
 
 @Controller('boards') // location
@@ -14,7 +23,16 @@ export class BoardsController {
   // getAllBoard(): Board[] {
   //   return this.boardsService.getAllBoards();
   // }
+  @Post()
+  @UsePipes(ValidationPipe)
+  createBoard(@Body() CreateBoardDto: CreateBoardDto): Promise<Board> {
+    return this.boardsService.createBoard(CreateBoardDto);
+  }
 
+  @Get('/:id')
+  getBoardById(@Param('id') id: number): Promise<Board> {
+    return this.boardsService.getBoardById(id);
+  }
   // // localhost:5000?id=abc 의 경우 @Body 로 못가져온다. @Param 을 사용한다.
   // // 만약 localhost:5000?id=abc&title=good 와 같이 2개를 받을 때는 다음과 같이 쓴다.
   // // @Param() params: string[]
