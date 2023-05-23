@@ -1,15 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Param,
-  Delete,
-  Patch,
-  UsePipes,
-  ValidationPipe,
-  NotFoundException,
-} from '@nestjs/common';
+import { Controller } from '@nestjs/common';
 import { BoardsService } from './boards.service';
 import { BoardStatus } from './board-status.enums';
 import { CreateBoardDto } from './dto/create-board.dto';
