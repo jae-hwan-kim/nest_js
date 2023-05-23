@@ -17,11 +17,11 @@ export class BoardStatusValidationPipe implements PipeTransform {
   }
 
   private isStatusValid(status: any) {
+    console.log('여기는?', status);
     const index = this.StatusOptions.indexOf(status);
     return index !== -1;
   }
   //   transform(value: any, metadata: ArgumentMetadata) {
-  //     console.log('value', value);
   //     console.log('metadata', metadata);
   //     if (value !== 'PUBLIC' || value !== 'PRIVATE') {
   //       throw new NotFoundException('error');

@@ -2,6 +2,7 @@ import {
   Controller,
   Get,
   Param,
+  Patch,
   UsePipes,
   Post,
   Body,
@@ -64,11 +65,13 @@ export class BoardsController {
   deleteBoard(@Param('id', ParseIntPipe) id): Promise<void> {
     return this.boardsService.deleteBoard(id);
   }
-  // @Patch('/:id/status') // U
-  // updateBoardStatus(
-  //   @Param('id') id: string,
-  //   @Body('status', BoardStatusValidationPipe) status: BoardStatus,
-  // ) {
-  //   return this.boardsService.updateBoardStatus(id, status);
-  // }
+
+  @Patch('/:id/status') // U
+  updateBoardStatus(
+    @Param('id', ParseIntPipe) id: number,
+    @Body('status', BoardStatusValidationPipe) status: BoardStatus, // BoardStatusValidationPipe 를 지우면 됨...
+  ) {
+    console.log('안됨', status);
+    return this.boardsService.updateBoardStatus(id, status);
+  }
 }
