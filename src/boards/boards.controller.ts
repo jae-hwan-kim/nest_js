@@ -6,6 +6,8 @@ import {
   Post,
   Body,
   ValidationPipe,
+  Delete,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { BoardsService } from './boards.service';
 import { Board } from './board.entity';
@@ -58,6 +60,10 @@ export class BoardsController {
   //   this.boardsService.deleteBoard(id);
   // }
 
+  @Delete('/:id')
+  deleteBoard(@Param('id', ParseIntPipe) id): Promise<void> {
+    return this.boardsService.deleteBoard(id);
+  }
   // @Patch('/:id/status') // U
   // updateBoardStatus(
   //   @Param('id') id: string,
