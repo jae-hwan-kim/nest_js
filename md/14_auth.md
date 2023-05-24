@@ -16,8 +16,3 @@ nest g controller auth --no-spec
 nest g service auth --no-spec
 ```
 
-<br>
-
----
-
-## 회원 가입 기능 구현
