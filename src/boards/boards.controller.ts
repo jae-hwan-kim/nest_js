@@ -74,7 +74,7 @@ export class BoardsController {
   @Patch('/:id/status') // U
   updateBoardStatus(
     @Param('id', ParseIntPipe) id: number,
-    @Body('status', BoardStatusValidationPipe) status: BoardStatus, // BoardStatusValidationPipe 를 지우면 됨...
+    @Body('status') status: BoardStatus, // BoardStatusValidationPipe 를 지우면 됨...
   ) {
     console.log('안됨', status);
     return this.boardsService.updateBoardStatus(id, status);
