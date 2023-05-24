@@ -1,4 +1,4 @@
-import { DataSource, EntityRepository, Repository } from 'typeorm';
+import { DataSource, Repository } from 'typeorm';
 import { Board } from './board.entity';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { BoardStatus } from './board-status.enums';

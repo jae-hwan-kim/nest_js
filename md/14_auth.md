@@ -6,6 +6,8 @@
 
 <br>
 
+---
+
 ## 필요한 설치
 
 ```sh
@@ -13,3 +15,9 @@ nest g module auth
 nest g controller auth --no-spec
 nest g service auth --no-spec
 ```
+
+<br>
+
+---
+
+## 회원 가입 기능 구현

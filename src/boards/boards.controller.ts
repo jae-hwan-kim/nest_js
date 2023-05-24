@@ -14,7 +14,7 @@ import { BoardsService } from './boards.service';
 import { Board } from './board.entity';
 import { CreateBoardDto } from './dto/create-board.dto';
 import { BoardStatus } from './board-status.enums';
-import { BoardStatusValidationPipe } from './pipes/board-status-validation.pipe';
+// import { BoardStatusValidationPipe } from './pipes/board-status-validation.pipe';
 
 @Controller('boards') // location
 export class BoardsController {
