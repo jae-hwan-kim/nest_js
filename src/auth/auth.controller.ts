@@ -14,7 +14,9 @@ export class AuthController {
   }
 
   @Post('/signin')
-  signIn(@Body(ValidationPipe) AuthCreadentailsDto: AuthCreadentailsDto) {
+  signIn(
+    @Body(ValidationPipe) AuthCreadentailsDto: AuthCreadentailsDto,
+  ): Promise<{ accessToken: string }> {
     return this.authService.signIn(AuthCreadentailsDto);
   }
 }

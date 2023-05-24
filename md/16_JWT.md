@@ -34,3 +34,34 @@ JSON Web Token 은 당사자간에 정보를 JSON 객체로 안전하게 전송�
 * 일치하면 Admin 유저가 원하는 글을 볼 수 있음
 
 <img src="https://github.com/JaeHwan-s-WebServeClass/webserver-nginx/assets/85930183/fd20b9c8-4659-4925-b3f2-83c8d470a32c" width="80%">
+
+<br>
+
+---
+
+## JWT 를 이용해서 토큰 생성하기
+
+### 필요한 모듈 설치하기
+
+```sh
+npm install @nestjs/jwt @nestjs/passport passport passport-jwt --save
+```
+
+* `@nestjs/jwt`
+    * nestjs 에서 jwt 를 사용하기 위해 필요한 모듈
+
+* `@nestjs/passport`
+    * nestjs 에서 passport 를 사용하기 위해 필요한 모듈
+
+* `passport`
+    * passport 모듈
+
+* `passport-jwt`
+    * jwt 모듈
+
+
+<br>
+
+---
+
+## JWT 모듈 애플리케이션에 등록하기
