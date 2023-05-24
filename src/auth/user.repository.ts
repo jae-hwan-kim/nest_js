@@ -6,6 +6,7 @@ import {
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class UserRepository extends Repository<User> {
@@ -16,7 +17,10 @@ export class UserRepository extends Repository<User> {
   async createUser(authCreadentailsDto: AuthCreadentailsDto): Promise<void> {
     const { username, password } = authCreadentailsDto;
 
-    const user = this.create({ username, password });
+    const salt = await bcrypt.genSalt();
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    const user = this.create({ username, password: hashedPassword });
     try {
       await this.save(user);
     } catch (error) {
