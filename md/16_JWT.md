@@ -65,3 +65,5 @@ npm install @nestjs/jwt @nestjs/passport passport passport-jwt --save
 ---
 
 ## JWT 모듈 애플리케이션에 등록하기
+
+참고 커밋 : commit 6f402e8fed7657018018b1865e8aa97cd9f3ccc0
