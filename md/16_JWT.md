@@ -67,3 +67,26 @@ npm install @nestjs/jwt @nestjs/passport passport passport-jwt --save
 ## JWT 모듈 애플리케이션에 등록하기
 
 참고 커밋 : commit 6f402e8fed7657018018b1865e8aa97cd9f3ccc0
+
+## JWT 인증 후 유저 정보 가져오기
+
+1, 2, 3, 4 는 이전 단계에서 했다. 이번에는 5, 6 을 해보자.
+
+<img src="https://github.com/JaeHwan-s-WebServeClass/webserver-nginx/assets/85930183/08d63fad-82d4-4c47-82ae-d63817e04d87" width="80%">
+
+클라이언트는 이미 jwt 를 갖고 있다. 헤더에 payload 정보를 넣어서 서버에 요청을 보낸다. 서버는 유효한지 확인 후 DB 에서 맞는 사람을 찾아 응답에 함께 보내준다.
+
+<img src="https://github.com/JaeHwan-s-WebServeClass/webserver-nginx/assets/85930183/1ad012c9-7959-4b4a-b80e-6d2cc17b44e0" width="80%">
+
+### 구현 순서
+
+1. 필요 모듈 설치
+
+```sh
+npm install @types/passport-jwt --save
+```
+
+* `@types/passport-jwt` 모듈
+    * passport-jwt 모듈을 위한 타입 정의 모듈
+
+2. jwt.strategy.ts 파일 생성
