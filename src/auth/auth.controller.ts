@@ -3,12 +3,14 @@ import {
   Post,
   Body,
   ValidationPipe,
-  Req,
+  // Req,
   UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthCreadentailsDto } from './dto/auth-credential.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { GetUser } from './get-user-decorator';
+import { User } from './user.entity';
 
 @Controller('auth')
 export class AuthController {
@@ -32,7 +34,7 @@ export class AuthController {
   // @UseGuards(AuthGuard()) 부분을 넣고, 포스트맨에서 Bearer Token 을 함께 넣고 요청을 보내면 user 정보가 함께 넘겨져온다.
   @Post('/test')
   @UseGuards(AuthGuard())
-  test(@Req() req) {
-    console.log('req', req);
+  test(@GetUser() user: User) {
+    console.log('user', user);
   }
 }
