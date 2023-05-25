@@ -10,6 +10,7 @@ import {
   Delete,
   ParseIntPipe,
   UseGuards,
+  Logger,
 } from '@nestjs/common';
 import { BoardsService } from './boards.service';
 import { Board } from './board.entity';
@@ -23,20 +24,27 @@ import { User } from 'src/auth/user.entity';
 @Controller('boards') // location
 @UseGuards(AuthGuard())
 export class BoardsController {
+  private logger = new Logger('BoardsController');
   // Service injection
   constructor(private boardsService: BoardsService) {}
 
   @Post()
   @UsePipes(ValidationPipe)
   createBoard(
-    @Body() CreateBoardDto: CreateBoardDto,
+    @Body() createBoardDto: CreateBoardDto,
     @GetUser() user: User,
   ): Promise<Board> {
-    return this.boardsService.createBoard(CreateBoardDto, user);
+    this.logger.verbose(
+      `User ${user.username} creating a new board.\n payload: ${JSON.stringify(
+        createBoardDto,
+      )}`,
+    );
+    return this.boardsService.createBoard(createBoardDto, user);
   }
 
   @Get()
   getAllBoard(@GetUser() user: User): Promise<Board[]> {
+    this.logger.verbose(`User ${user.username} tyring to get all boards.`);
     return this.boardsService.getAllBoards(user);
   }
 
