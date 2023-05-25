@@ -39,3 +39,13 @@ npm install config --save
 2. config 폴더 안에 `default.yml`, `development.yml`, `production.yml` 파일 생성
 
 <img src="https://github.com/JaeHwan-s-WebServeClass/webserver-nginx/assets/85930183/4cd075cd-c791-44cd-a521-5e4c54969b18" width="80%">
+
+<br>
+
+---
+
+## 코드에 config 설정 대입하기
+
+```ts
+import * as config from 'config';
+```
