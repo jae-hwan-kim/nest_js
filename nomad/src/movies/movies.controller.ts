@@ -13,6 +13,7 @@ import {
 import { MoviesService } from './movies.service';
 import { Movie } from './entities/movie.entity';
 import { CreateMovieDto } from './dto/create-movie.dto';
+import { UpdateMovieDto } from './dto/update-movie.dto';
 
 @Controller('movies') // 엔트리 포인트를 관리한다.
 export class MoviesController {
@@ -47,7 +48,7 @@ export class MoviesController {
   }
 
   @Patch('/:id') // Put 은 전체를 업데이트한다. Patch 는 부분을 업데이트한다.
-  patch(@Param('id') movieId: number, @Body() updateData) {
+  patch(@Param('id') movieId: number, @Body() updateData: UpdateMovieDto) {
     return this.moviesService.update(movieId, updateData);
   }
 }
