@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.MoviesController = void 0;
 const common_1 = require("@nestjs/common");
 const movies_service_1 = require("./movies.service");
+const movie_entity_1 = require("./entities/movie.entity");
 let MoviesController = class MoviesController {
     constructor(moviesService) {
         this.moviesService = moviesService;
@@ -34,7 +35,7 @@ let MoviesController = class MoviesController {
         return this.moviesService.create(movieData);
     }
     remove(id) {
-        return this.moviesService.remove(id);
+        return this.moviesService.deleteOne(id);
     }
     patch(movieId, updateData) {
         return this.moviesService.patch(movieId, updateData);
@@ -44,7 +45,7 @@ __decorate([
     (0, common_1.Get)(),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Array)
 ], MoviesController.prototype, "getAll", null);
 __decorate([
     (0, common_1.Get)('search'),
@@ -58,7 +59,7 @@ __decorate([
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", movie_entity_1.Movie)
 ], MoviesController.prototype, "getOne", null);
 __decorate([
     (0, common_1.Post)(),

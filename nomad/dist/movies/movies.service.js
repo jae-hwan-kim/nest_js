@@ -9,17 +9,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.MoviesService = void 0;
 const common_1 = require("@nestjs/common");
 let MoviesService = class MoviesService {
+    constructor() {
+        this.movies = [];
+    }
     getAll() {
-        return 'This will return all movies';
+        return this.movies;
     }
     getOne(id) {
-        return `This will return one movie : ID ${id}`;
+        return this.movies.find((movie) => movie.id === +id);
     }
     create(movieData) {
-        return movieData;
+        this.movies.push(Object.assign({ id: this.movies.length + 1 }, movieData));
     }
-    remove(id) {
-        return `This will delete a movie : ID ${id}`;
+    deleteOne(id) {
+        this.movies.filter((movie) => movie.id !== +id);
+        return true;
     }
     patch(movieId, updateData) {
         return Object.assign({ updateMovie: movieId }, updateData);

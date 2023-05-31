@@ -9,13 +9,14 @@ import {
   Query,
 } from '@nestjs/common';
 import { MoviesService } from './movies.service';
+import { Movie } from './entities/movie.entity';
 
 @Controller('movies') // 엔트리 포인트를 관리한다.
 export class MoviesController {
-  constructor(private moviesService: MoviesService) {}
+  constructor(private readonly moviesService: MoviesService) {}
 
   @Get()
-  getAll() {
+  getAll(): Movie[] {
     // return 'This will return all movies';
     return this.moviesService.getAll();
   }
@@ -27,7 +28,7 @@ export class MoviesController {
   }
 
   @Get('/:id') // '/:id' 의 id 와 @Param('id') 의 id 는 같아야한다.
-  getOne(@Param('id') moviId: string) {
+  getOne(@Param('id') moviId: string): Movie {
     return this.moviesService.getOne(moviId);
   }
 
@@ -40,7 +41,7 @@ export class MoviesController {
 
   @Delete('/:id')
   remove(@Param('id') id: string) {
-    return this.moviesService.remove(id);
+    return this.moviesService.deleteOne(id);
   }
 
   @Patch('/:id') // Put 은 전체를 업데이트한다. Patch 는 부분을 업데이트한다.
