@@ -7,9 +7,12 @@ import {
   Patch,
   Post,
   Query,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { MoviesService } from './movies.service';
 import { Movie } from './entities/movie.entity';
+import { CreateMovieDto } from './dto/create-movie.dto';
 
 @Controller('movies') // 엔트리 포인트를 관리한다.
 export class MoviesController {
@@ -33,19 +36,18 @@ export class MoviesController {
   }
 
   @Post()
-  create(@Body() movieData) {
-    console.log(JSON.stringify(movieData));
-    console.log(movieData);
+  @UsePipes(ValidationPipe)
+  create(@Body() movieData: CreateMovieDto) {
     return this.moviesService.create(movieData);
   }
 
   @Delete('/:id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id') id: string): boolean {
     return this.moviesService.deleteOne(id);
   }
 
   @Patch('/:id') // Put 은 전체를 업데이트한다. Patch 는 부분을 업데이트한다.
   patch(@Param('id') movieId: string, @Body() updateData) {
-    return this.moviesService.patch(movieId, updateData);
+    return this.moviesService.update(movieId, updateData);
   }
 }

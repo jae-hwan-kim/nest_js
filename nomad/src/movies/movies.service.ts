@@ -1,5 +1,6 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Movie } from './entities/movie.entity';
+import { CreateMovieDto } from './dto/create-movie.dto';
 
 @Injectable()
 export class MoviesService {
@@ -10,10 +11,14 @@ export class MoviesService {
   }
 
   getOne(id: string): Movie {
-    return this.movies.find((movie) => movie.id === +id);
+    const movie = this.movies.find((movie) => movie.id === +id);
+    if (!movie) {
+      throw new NotFoundException(`Movie with ID ${id} not found.`);
+    }
+    return movie;
   }
 
-  create(movieData) {
+  create(movieData: CreateMovieDto) {
     this.movies.push({
       id: this.movies.length + 1,
       ...movieData,
@@ -21,15 +26,16 @@ export class MoviesService {
   }
 
   deleteOne(id: string): boolean {
-    this.movies.filter((movie) => movie.id !== +id);
+    this.getOne(id);
+    this.movies = this.movies.filter((movie) => movie.id !== +id);
     return true;
   }
 
-  patch(movieId: string, updateData) {
-    return {
-      updateMovie: movieId,
-      ...updateData,
-    };
+  update(id: string, updateData) {
+    // updataData 에 대한 유효성 검사가 필요하다. 파이프! DTO는 간결성을 위해!
+    const movie = this.getOne(id);
+    this.deleteOne(id);
+    this.movies.push({ ...movie, ...updateData });
   }
 
   search(searchYear) {
