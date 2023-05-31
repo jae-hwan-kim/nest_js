@@ -8,6 +8,7 @@ async function bootstrap() {
     new ValidationPipe({
       whitelist: true,
       forbidNonWhitelisted: true, // 정의되지 않은 키가 들어오면 에러
+      transform: true,
     }),
   );
   await app.listen(3000);

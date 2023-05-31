@@ -10,8 +10,8 @@ export class MoviesService {
     return this.movies;
   }
 
-  getOne(id: string): Movie {
-    const movie = this.movies.find((movie) => movie.id === +id);
+  getOne(id: number): Movie {
+    const movie = this.movies.find((movie) => movie.id === id);
     if (!movie) {
       throw new NotFoundException(`Movie with ID ${id} not found.`);
     }
@@ -25,13 +25,13 @@ export class MoviesService {
     });
   }
 
-  deleteOne(id: string): boolean {
+  deleteOne(id: number): boolean {
     this.getOne(id);
     this.movies = this.movies.filter((movie) => movie.id !== +id);
     return true;
   }
 
-  update(id: string, updateData) {
+  update(id: number, updateData) {
     // updataData 에 대한 유효성 검사가 필요하다. 파이프! DTO는 간결성을 위해!
     const movie = this.getOne(id);
     this.deleteOne(id);

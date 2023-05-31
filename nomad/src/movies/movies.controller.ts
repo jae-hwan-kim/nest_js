@@ -31,7 +31,7 @@ export class MoviesController {
   }
 
   @Get('/:id') // '/:id' 의 id 와 @Param('id') 의 id 는 같아야한다.
-  getOne(@Param('id') moviId: string): Movie {
+  getOne(@Param('id') moviId: number): Movie {
     return this.moviesService.getOne(moviId);
   }
 
@@ -42,12 +42,12 @@ export class MoviesController {
   }
 
   @Delete('/:id')
-  remove(@Param('id') id: string): boolean {
+  remove(@Param('id') id: number): boolean {
     return this.moviesService.deleteOne(id);
   }
 
   @Patch('/:id') // Put 은 전체를 업데이트한다. Patch 는 부분을 업데이트한다.
-  patch(@Param('id') movieId: string, @Body() updateData) {
+  patch(@Param('id') movieId: number, @Body() updateData) {
     return this.moviesService.update(movieId, updateData);
   }
 }
