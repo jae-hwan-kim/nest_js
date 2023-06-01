@@ -74,7 +74,10 @@ describe('MoviesService', () => {
 - `beforeEach`
   - 테스트를 하기전에 실행된다.
 - `it`
+
   - it 는 individual test(개별 테스트)의 줄임말로 테스트 케이스이다.
+
+- `beforeEach` 외에도 `afterEach`, `beforeAll`, `afterAll` 등 많은 `Hook` 이 있다.
 
 <br>
 
@@ -106,7 +109,7 @@ it('should be 4', () => {
 
 ---
 
-## ❒ 실제 함수를 이용해서 테스트해보자
+## ❒ 실제 함수를 이용해서 유닛 테스트해보자
 
 ☝🏻 `npm run test:watch`를 실행하고 테스트 코드를 작성해도 되고, 모두 작성하고 실행해도 된다.
 
@@ -207,3 +210,218 @@ describe('getOne', () => {
 실행 결과는 다음과 같다.
 
 <img src="https://github.com/jae-hwan-kim/nest_js/assets/85930183/ec45cd5e-133a-4405-b5d5-d827f752c1f8"  width="100%">
+
+이와 같은 방식으로 함수들을 테스트할 수 있다.
+
+<br>
+
+---
+
+## ❒ 실제 함수를 이용해서 e2e 테스트해보자
+
+e2e 테스트는 test 폴더에 있는 파일로 한다. 프로젝트 생성 초기에 함께 생성된다.
+
+<img src="https://github.com/nomadcoders/hi-nest/assets/85930183/2cd1457a-cdbd-404f-8fb6-62b98f807d90" width="90%">
+
+이렇게 생겼다.
+
+```ts
+import { Test, TestingModule } from '@nestjs/testing';
+import { INestApplication } from '@nestjs/common';
+import * as request from 'supertest';
+import { AppModule } from '../src/app.module';
+
+describe('AppController (e2e)', () => {
+  let app: INestApplication;
+
+  beforeEach(async () => {
+    const moduleFixture: TestingModule = await Test.createTestingModule({
+      imports: [AppModule],
+    }).compile();
+
+    app = moduleFixture.createNestApplication();
+    await app.init();
+  });
+
+  it('/ (GET)', () => {
+    return request(app.getHttpServer())
+      .get('/')
+      .expect(200)
+      .expect('Hello World!');
+  });
+});
+```
+
+<br>
+
+---
+
+쪼개서 보자.
+
+### 1. `/ (GET)` API를 테스트한다.
+
+아래 테스트는 다음을 의미한다.
+
+1. `/` URL 로 `Get` 메서드를 테스트한다.
+2. `200` 상태 코드가 기대된다.
+3. `Hello World` 가 기대된다.
+
+즉, Controller, Service, Pipe 의 결과에 대해 모든 테스트를 하고 있다는 뜻이기도 하다.
+
+```ts
+it('/ (GET)', () => {
+  return request(app.getHttpServer())
+    .get('/')
+    .expect(200)
+    .expect('Hello World!');
+});
+```
+
+<br>
+
+---
+
+### 실행해보자
+
+`npm run test:e2e`를 입력하면 테스트를 시작한다. 다음은 실패할 경우이다.
+
+<img src="https://github.com/nomadcoders/hi-nest/assets/85930183/e7bd9a1e-7c85-4d2d-bf8a-7a58ffee5aee" width="90%">
+
+성공하면 이렇게 출력된다.
+
+<img src="https://github.com/nomadcoders/hi-nest/assets/85930183/d86f9a35-2c76-46ec-9172-611d281f2576" width="90%">
+
+<br>
+
+---
+
+### 더 많은 테스트를 해보자.
+
+GET, POST, DELETE 테스트!
+
+```ts
+describe('/movies', () => {
+  it('GET', () => {
+    return request(app.getHttpServer()).get('/movies').expect(200).expect([]);
+  });
+  it('POST', () => {
+    return request(app.getHttpServer())
+      .post('/movies')
+      .send({
+        title: 'Test',
+        year: 2000,
+        genres: ['test'],
+      })
+      .expect(201);
+  });
+  it('POST 400', () => {
+    return request(app.getHttpServer())
+      .post('/movies')
+      .send({
+        title: 'Test',
+        year: 2000,
+        genres: ['test'],
+        other: 'thing',
+      })
+      .expect(400);
+  });
+  it('DELETE', () => {
+    return request(app.getHttpServer()).delete('/movies').expect(404);
+  });
+});
+```
+
+<br>
+
+---
+
+## 적절한 테스트를 위한 여러가지 TIP
+
+### 1.
+
+테스트 파일을 보면, 테스트를 실행할 때마다 `app` 을 새로 만든다.
+
+```ts
+...
+  return request(app.getHttpServer())
+...
+```
+
+`POST`에서 movie를 하나 생성하는데, `POST` 테스트가 끝나면 이 요소는 사라지게된다. 즉, 데이터베이스가 비워진다. 그래서 다른 테스트를 할 때 매번 새로운 movie 를 생성해야하는 번거로움이 있다.
+
+간단하게 해결 가능하다. `beforeEach`를 `beforeAll`로 바꿔주자. 그럼 테스트를 진행하며 `POST`했던 요소를 기억한다.
+
+<br>
+
+---
+
+### 2.
+
+테스트를 할 때 생성하는 app과 실제 프로그램이 생성하는 app이 다르다는 것을 인지해야한다.
+
+app 생성 부분을 보자.
+
+실제 프로그램은 다음과 같다.
+
+```ts
+const app = await NestFactory.create(AppModule);
+app.useGlobalPipes(
+  new ValidationPipe({
+    whitelist: true,
+    forbidNonWhitelisted: true, // 정의되지 않은 키가 들어오면 에러
+    transform: true,
+  }),
+);
+await app.listen(3000);
+```
+
+테스트 프로그램은 다음과 같다.
+
+```ts
+beforeAll(async () => {
+  ...
+  app = moduleFixture.createNestApplication();
+  await app.init();
+});
+```
+
+어떤 차이가 있는지 보이는가?? 테스트 프로그램에서는 `Pipe` 검사에 관한 옵션이 없다. 이러면 테스트를 할 때 실제 프로그램과 차이를 보일 수 있다. 그렇기 때문에 테스트 프로그램의 app을 실제 프로그램과 같게 바꿔줘야한다.
+
+```ts
+...
+app = moduleFixture.createNestApplication();
+app.useGlobalPipes(
+  new ValidationPipe({
+    whitelist: true,
+    forbidNonWhitelisted: true, // 정의되지 않은 키가 들어오면 에러
+    transform: true,
+  }),
+);
+await app.init();
+```
+
+<br>
+
+---
+
+### 3. 다양한 테스트를 해보자!!
+
+```ts
+describe('/movies/:id', () => {
+  it('GET 200', () => {
+    return request(app.getHttpServer()).get('/movies/1').expect(200);
+  });
+  it('GET 404', () => {
+    return request(app.getHttpServer()).get('/movies/999').expect(404);
+  });
+  it('PATCH 200', () => {
+    return request(app.getHttpServer())
+      .patch('/movies/1')
+      .send({ title: 'Updated Test' })
+      .expect(200);
+  });
+  it('DELETE 200', () => {
+    return request(app.getHttpServer()).delete('/movies/1').expect(200);
+  });
+});
+```
