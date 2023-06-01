@@ -21,4 +21,29 @@ describe('AppController (e2e)', () => {
       .expect(200)
       .expect('Hello World!');
   });
+
+  // 방법 1.
+  // it('/movies (GET)', () => {
+  //   return request(app.getHttpServer()).get('/movies').expect(200).expect([]);
+  // });
+
+  // 방법 2.
+  describe('/movies', () => {
+    it('GET', () => {
+      return request(app.getHttpServer()).get('/movies').expect(200).expect([]);
+    });
+    it('POST', () => {
+      return request(app.getHttpServer())
+        .post('/movies')
+        .send({
+          title: 'Test',
+          year: 2000,
+          genres: ['test'],
+        })
+        .expect(201);
+    });
+    it('DELETE', () => {
+      return request(app.getHttpServer()).delete('/movies').expect(404);
+    });
+  });
 });
