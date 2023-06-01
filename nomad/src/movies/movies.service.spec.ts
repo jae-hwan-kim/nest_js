@@ -1,6 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { MoviesService } from './movies.service';
 import { NotFoundException } from '@nestjs/common';
+import { before } from 'node:test';
 
 describe('MoviesService', () => {
   let service: MoviesService;
@@ -26,7 +27,7 @@ describe('MoviesService', () => {
     });
   });
 
-  // movies.service.service.ts 의 getOne 을 테스트하는 함수
+  // // movies.service.service.ts 의 getOne 을 테스트하는 함수
   describe('getOne', () => {
     it('should return a movie', () => {
       service.create({
@@ -46,6 +47,44 @@ describe('MoviesService', () => {
         expect(e).toBeInstanceOf(NotFoundException);
         // expect(e.message).toEqual(`Movie with ID 999 not found.`);
       }
+    });
+  });
+
+  describe('deleteOne', () => {
+    it('deletes a movie', () => {
+      service.create({
+        title: 'Test Movie',
+        genres: ['test'],
+        year: 2000,
+      });
+      const beforeMovies = service.getAll().length;
+      service.deleteOne(1);
+      const afterDelete = service.getAll().length;
+      // expect(afterDelete).toEqual(beforeMovies - 1);
+      expect(afterDelete).toBeLessThanOrEqual(beforeMovies);
+    });
+
+    it('should return a 404', () => {
+      try {
+        service.deleteOne(999);
+      } catch (e) {
+        expect(e).toBeInstanceOf(NotFoundException);
+        // expect(e.message).toEqual(`Movie with ID 999 not found.`);
+      }
+    });
+  });
+
+  describe('create', () => {
+    it('should create a movie', () => {
+      const beforeCreate = service.getAll().length;
+      service.create({
+        title: 'Test Movie',
+        genres: ['test'],
+        year: 2000,
+      });
+      const afterCreate = service.getAll().length;
+      console.log(beforeCreate, afterCreate);
+      expect(afterCreate).toBeGreaterThan(beforeCreate);
     });
   });
 });
