@@ -20,14 +20,16 @@ export class SocketGateway implements OnModuleInit {
       console.log(socket.id);
       console.log('Connected');
     });
+    this.server.on('onMessage', () => {
+      console.log('aaaaaa');
+    });
   }
 
   // @SubscribeMessage('message')
   // handleMessage(client: any, payload: any) {
   @SubscribeMessage('message')
   handleMessage(@MessageBody() body: any) {
-    // console.log('client ', client);
-    console.log('body ', body);
+    console.log('Subscribe: message, Emit: onMessage\n');
     // 다른 곳에 보냄
     this.server.emit('onMessage', {
       msg: 'New Message',
@@ -35,20 +37,15 @@ export class SocketGateway implements OnModuleInit {
     });
   }
 
-  // @SubscribeMessage('events')
-  // handleEvent(@MessageBody() data: string): string {
-  //   return data;
-  // }
-
   /* 데코레이터에 속성 키를 전단해서 수신 메시지 본문에서 추출 가능 */
   @SubscribeMessage('events')
   handleEvent(@MessageBody() body: any) {
+    console.log('Subscribe: events, Emit: onReply\n');
     this.server.emit('onReply', {
       msg: 'New Message',
       content: body,
     });
   }
-
   // 데코레이터를 사용하지 않는 경우 다음 코드는 위 코드와 기능적으로 같다.
   // 첫 번째 인자는 플랫폼별 소켓 인스턴스, 두 번째 인자는 클라이언트에서 받은 데이터
   // @SubscribeMessage('events')

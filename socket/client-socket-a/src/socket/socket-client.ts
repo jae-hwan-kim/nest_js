@@ -15,12 +15,14 @@ export class SocketClient implements OnModuleInit {
   }
 
   private registerConsumerEvents() {
-    this.socketClient.emit('message', { msg: 'hey there' });
     this.socketClient.on('connect', () => {
-      console.log('Connected to Gateway');
+      console.log('ClientA Connected to Gateway');
     });
-    this.socketClient.on('onMessage', (payload: any) => {
-      console.log(payload);
-    });
+    // this.socketClient.on('onMessage', (payload: any) => {
+    //   console.log('socket-client: onMessage\n', payload);
+    // });
+    // this.socketClient.on('onReply', (payload: any) => {
+    //   console.log('socket-client: onReply\n', payload);
+    // });
   }
 }
