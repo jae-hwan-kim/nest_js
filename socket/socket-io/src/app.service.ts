@@ -1,12 +1,11 @@
-import { Get, Injectable } from '@nestjs/common';
+import { Injectable, Res } from '@nestjs/common';
+import { Response } from 'express';
+import * as path from 'path';
 
 @Injectable()
 export class AppService {
-  // getHello(): string {
-  //   return 'Hello World!';
-  // }
-  // @Get()
-  // sendFile() {
-  //   return __dirname + '/index.html';
-  // }
+  getChat(@Res() res: Response) {
+    const filePath = path.resolve(__dirname, '..', 'public', 'index.html');
+    res.sendFile(filePath);
+  }
 }
