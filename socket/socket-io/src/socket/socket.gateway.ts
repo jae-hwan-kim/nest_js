@@ -22,6 +22,7 @@ export class SocketGateway implements OnModuleInit {
 
       socket.on('chat message', (msg) => {
         console.log('message: ' + msg);
+        this.server.emit('chat message', msg); // This will emit the event to all connected sockets
       });
     });
   }
