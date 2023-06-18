@@ -1,5 +1,5 @@
 import { DataSource, Repository } from 'typeorm';
-import { Chat } from './socket.entity';
+import { Chat } from './data.entity';
 import { CreateChatDto } from './dto/create-chat.dto';
 import { Injectable } from '@nestjs/common';
 
