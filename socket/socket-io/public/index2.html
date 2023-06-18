@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Socket.IO chat</title>
+    <style></style>
+  </head>
+  <body>
+    <ul id="messages"></ul>
+    <button onclick="sendMessage()">Send</button>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      var socket = io("http://localhost:3000/events");
+
+      function sendMessage() {
+        socket.emit('events', { name: 'Nest' }, (data) => console.log(data));
+      }
+    </script>
+  </body>
+</html>
