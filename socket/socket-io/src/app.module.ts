@@ -1,11 +1,19 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { eventsGateway } from './events/events.gateway';
+import { EventsModule } from './events/events.module';
 
 @Module({
-  imports: [],
+  imports: [EventsModule],
   controllers: [AppController],
-  providers: [AppService, eventsGateway],
+  providers: [AppService],
 })
 export class AppModule {}
+
+// import { Module } from '@nestjs/common';
+// import { EventsModule } from './events/events.module';
+
+// @Module({
+//   imports: [EventsModule],
+// })
+// export class AppModule {}

@@ -9,11 +9,12 @@
     <button onclick="sendMessage()">Send</button>
     <script src="/socket.io/socket.io.js"></script>
     <script>
-      var socket = io("http://localhost:3000/events");
+      var socket = io('http://localhost:3000');
 
       function sendMessage() {
         socket.emit('events', { name: 'Nest' }, (data) => console.log(data));
       }
+      socket.on('events', (data) => console.log(data));
     </script>
   </body>
 </html>
