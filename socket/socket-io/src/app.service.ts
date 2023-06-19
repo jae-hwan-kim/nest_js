@@ -4,8 +4,8 @@ import * as path from 'path';
 
 @Injectable()
 export class AppService {
-  getChat(@Res() res: Response) {
-    const filePath = path.resolve(__dirname, '..', 'public', 'index2.html');
-    res.sendFile(filePath);
-  }
+  // getChat(@Res() res: Response) {
+  //   const filePath = path.resolve(__dirname, '..', 'public', 'index2.html');
+  //   res.sendFile(filePath);
+  // }
 }

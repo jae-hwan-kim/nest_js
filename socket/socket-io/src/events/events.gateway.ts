@@ -1,6 +1,8 @@
-import { Bind } from '@nestjs/common';
+import { Bind, Logger } from '@nestjs/common';
 import {
   MessageBody,
+  OnGatewayConnection,
+  OnGatewayInit,
   SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
@@ -10,23 +12,45 @@ import { from, map } from 'rxjs';
 
 @WebSocketGateway({
   cors: {
-    origin: '*',
+    // 클라이언트가 랜더링 되고 있는 포트 번호를 입력해준다.
+    origin: 'http://localhost:3001',
   },
   transports: ['polling', 'websocket'],
 })
-export class eventsGateway {
+export class eventsGateway implements OnGatewayInit, OnGatewayConnection {
   @WebSocketServer()
   server: Server; // npm install socket.io
-  // @SubscribeMessage('message')
-  // handleMessage(client: any, payload: any): string {
-  //   return 'Hello world!';
-  // }
 
-  // @Bind(MessageBody())
+  private logger: Logger = new Logger('AppGateway');
+  afterInit() {
+    this.logger.log('Initialized!');
+
+    this.server.on('connection', (socket) => {
+      console.log(socket.id, 'Connected');
+    });
+  }
+
+  handleConnection(client: any, ...args: any[]) {
+    this.logger.log(`Client connected: ${client.id}`);
+  }
+
+  @SubscribeMessage('message')
+  handleMessage(client: any, payload: any): string {
+    return 'Hello world!';
+  }
+
+  @Bind(MessageBody())
+  @SubscribeMessage('events')
+  handleEvent(data: string) {
+    console.log('data : ', data);
+    return data;
+  }
+
   // @SubscribeMessage('events')
-  // handleEvent(data: string) {
+  // handleEvent(@MessageBody() data: unknown): WsResponse<unknown> {
   //   console.log('data : ', data);
-  //   return data;
+  //   const event = 'events';
+  //   return { event, data };
   // }
 
   @Bind(MessageBody())
@@ -39,24 +63,10 @@ export class eventsGateway {
     return from(response).pipe(map((data) => ({ event, data })));
   }
 
-  // @SubscribeMessage('events')
-  // handleEvent(@MessageBody() data: unknown): WsResponse<unknown> {
-  //   console.log('data : ', data);
-  //   const event = 'events';
-  //   return { event, data };
-  // }
-
-  // @Bind(MessageBody('id'))
-  // @SubscribeMessage('events')
-  // handleEventId(id) {
-  //   console.log('id : ', id);
-  //   return id;
-  // }
-
-  // @Bind(MessageBody(), ConnectedSocket())
-  // @SubscribeMessage('events')
-  // handleEventMessageAndSocket(data, client) {
-  //   console.log('data : ', data, ' client : ', client);
-  //   return data;
-  // }
+  @Bind(MessageBody('id'))
+  @SubscribeMessage('events')
+  handleEventId(id) {
+    console.log('id : ', id);
+    return id;
+  }
 }

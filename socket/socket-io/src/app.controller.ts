@@ -7,8 +7,8 @@ import { Response } from 'express';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get()
-  getChat(@Res() res: Response) {
-    this.appService.getChat(res);
-  }
+  // @Get()
+  // getChat(@Res() res: Response) {
+  //   this.appService.getChat(res);
+  // }
 }
